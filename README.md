@@ -51,7 +51,8 @@ cd /tank/savapage && ./start.sh
 ├── image/                      # Dockerfile + entrypoint (built by CI)
 └── data/
     ├── server/  → /opt/savapage/server/data  (server.properties, encryption.properties!)
-    └── cups/    → /etc/cups                  (printer queues)
+    ├── cups/    → /etc/cups                  (printer queues)
+    └── ipa-ca.crt                          # FreeIPA CA for LDAPS, copied by setup.sh
 ```
 
 `data/server/encryption.properties` is the key for secrets SavaPage stores in the database. Back it up together with the DB, because a DB restore without it is useless.

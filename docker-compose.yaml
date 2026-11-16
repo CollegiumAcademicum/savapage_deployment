@@ -8,6 +8,8 @@ services:
     volumes:
       - ./data/server:/opt/savapage/server/data:z
       - ./data/cups:/etc/cups:z
+      # FreeIPA CA for LDAPS, copied from /etc/ipa/ca.crt by setup.sh.
+      - ./data/ipa-ca.crt:/usr/local/share/ca-certificates/ipa-ca.crt:ro,z
     networks:
       - default
       - caddy

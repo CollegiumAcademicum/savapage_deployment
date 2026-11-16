@@ -17,6 +17,10 @@ info() { echo "[entrypoint] $*"; }
 [ -e /etc/cups/cupsd.conf ] || { info "Seeding /etc/cups"; cp -a /etc/cups.dist/. /etc/cups/; }
 chown -R savapage:savapage "$DATA"
 
+# Trust the mounted FreeIPA CA (LDAPS); the ca-certificates-java hook adds it
+# to the JDK truststore too.
+update-ca-certificates >/dev/null
+
 # ── 2. server.properties from env ──────────────────────────────────────────
 set_prop() {
     touch "$PROPS"

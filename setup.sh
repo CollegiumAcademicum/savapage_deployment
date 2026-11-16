@@ -61,6 +61,9 @@ fi
 # ── 4. data directories ───────────────────────────────────────────────────────
 info "Ensuring data directories exist..."
 mkdir -p data/server data/cups
+# The container trusts this CA for LDAPS to FreeIPA (copied, so :z does not
+# relabel the host's own file).
+cp /etc/ipa/ca.crt data/ipa-ca.crt || die "/etc/ipa/ca.crt missing — is pod0 enrolled in FreeIPA?"
 
 # ── 5. systemd services ──────────────────────────────────────────────────────
 if command -v systemctl >/dev/null 2>&1; then
