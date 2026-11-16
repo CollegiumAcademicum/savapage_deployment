@@ -1,4 +1,4 @@
-/* Collegium Academicum look for the SavaPage web apps, matching CArtei and
+/* Collegium Academicum look for the SavaPage user web app, matching CArtei and
  * start.ca-hd.de. Loaded last (web.properties), so it overrides the jQuery
  * Mobile 1.4.5 swatches: "a" = pages and dialogs, "b" = headers/dividers.
  * Fonts are served from here, not Google, so no visitor IPs leave the site. */
@@ -60,8 +60,7 @@ html, body, .ui-mobile, .ui-page, .ui-btn, input, select, textarea, button,
 
 /* No jQuery Mobile bevels: flat surfaces, soft shadow only on cards. */
 .ui-shadow, .ui-btn.ui-shadow, .ui-shadow-icon.ui-btn:after { box-shadow: none !important; }
-.ui-content { padding: 1.25em; }
-.ui-page-theme-a .ui-btn { padding-top: .8em; padding-bottom: .8em; }
+
 
 /* ── buttons ──────────────────────────────────────────────────────────── */
 .ui-page-theme-a .ui-btn, .ui-body-a .ui-btn, .ui-overlay-a .ui-btn {

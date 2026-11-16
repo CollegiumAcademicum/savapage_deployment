@@ -62,7 +62,7 @@ cd /tank/savapage && ./start.sh
 
 `custom/` gives the web apps the Collegium Academicum look. Compose mounts it into `/opt/savapage/server/custom/` (manual ch. 20):
 
-- `web.properties` turns off SavaPage's default background and loads `web/ca.css` in the user, admin and job ticket apps.
+- `web.properties` turns off SavaPage's default background and loads `web/ca.css` in the user app (the admin app keeps its stock look).
 - `web/ca.css` overrides the jQuery Mobile swatches with CA teal, Source Sans 3 and the logo on the login page. The font is bundled in `web/fonts/` (OFL), so no requests go to Google.
 - `html/*-login*.html` holds the login headings in English and German (`_de`). The user versions also carry a small script that opens the upload page right after login instead of the document preview. SavaPage has no setting for this; it works because the login snippet is inserted with jQuery `.html()`, which runs inline scripts.
 
