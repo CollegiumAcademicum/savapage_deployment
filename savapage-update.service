@@ -1,0 +1,11 @@
+[Unit]
+Description=Update SavaPage image
+After=network-online.target
+RequiresMountsFor=/tank/savapage
+
+[Service]
+Type=oneshot
+WorkingDirectory=/tank/savapage
+ExecStart=/usr/bin/podman compose pull
+ExecStart=/usr/bin/systemctl restart savapage.service
+ExecStart=/usr/bin/podman image prune -f

@@ -1,0 +1,16 @@
+[Unit]
+Description=SavaPage print portal
+Requires=network-online.target cartei-db.service
+After=network-online.target cartei-db.service
+RequiresMountsFor=/tank/savapage
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/tank/savapage
+ExecStart=/usr/bin/podman compose up -d
+ExecStop=/usr/bin/podman compose down
+TimeoutStartSec=120
+
+[Install]
+WantedBy=multi-user.target

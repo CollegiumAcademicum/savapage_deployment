@@ -1,0 +1,89 @@
+name: Build SavaPage image
+
+# Rebuilds only when SavaPage publishes a release we don't have on GHCR yet,
+# or when image/ itself changes. The nightly run is just a cheap version check.
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  push:
+    branches: [main]
+    paths: ["image/**", ".github/workflows/image.yaml"]
+  workflow_dispatch:
+
+env:
+  IMAGE: ghcr.io/collegiumacademicum/savapage
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+    outputs:
+      installer: ${{ steps.latest.outputs.installer }}
+      version: ${{ steps.latest.outputs.version }}
+      build: ${{ steps.decide.outputs.build }}
+    steps:
+      - name: Find latest SavaPage release
+        id: latest
+        run: |
+          installer=$(curl -fsSL https://download.savapage.org/installer/ \
+            | grep -oE 'savapage-setup-[0-9]+\.[0-9]+\.[0-9]+-final-linux-x64\.bin' \
+            | sort -uV | tail -1)
+          [ -n "$installer" ] || { echo "No installer found in listing" >&2; exit 1; }
+          version=$(echo "$installer" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          echo "Latest: $version ($installer)"
+          echo "installer=$installer" >> "$GITHUB_OUTPUT"
+          echo "version=$version"     >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Scheduled runs build only if this version isn't published yet;
+      # pushes and manual runs always rebuild.
+      - name: Decide
+        id: decide
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] \
+             && docker manifest inspect "$IMAGE:${{ steps.latest.outputs.version }}" >/dev/null 2>&1; then
+            echo "$IMAGE:${{ steps.latest.outputs.version }} already exists — nothing to do."
+            echo "build=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "build=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    needs: check
+    if: needs.check.outputs.build == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # :<version> stays pullable for rollbacks; pod0 follows :latest.
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: image
+          push: true
+          build-args: SAVAPAGE_INSTALLER=${{ needs.check.outputs.installer }}
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ needs.check.outputs.version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

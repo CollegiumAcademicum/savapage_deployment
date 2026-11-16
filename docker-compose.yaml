@@ -1,0 +1,22 @@
+# Runs on pod0. The database lives in CArtei's Postgres (cartei-db.service),
+# reached as cartei_postgres_1 over cartei_default; Caddy (/tank/caddy)
+# reverse-proxies to savapage_savapage_1:8631 over systemd-caddy.
+services:
+  savapage:
+    image: ghcr.io/collegiumacademicum/savapage:latest
+    env_file: .env
+    volumes:
+      - ./data/server:/opt/savapage/server/data:z
+      - ./data/cups:/etc/cups:z
+    networks:
+      - default
+      - caddy
+    restart: unless-stopped
+
+networks:
+  default:
+    name: cartei_default
+    external: true
+  caddy:
+    name: systemd-caddy
+    external: true

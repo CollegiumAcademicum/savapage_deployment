@@ -1,0 +1,4 @@
+# Add to /tank/caddy/Caddyfile on pod0, then reload Caddy.
+https://print.ca-hd.de {
+	reverse_proxy http://savapage_savapage_1.dns.podman:8631
+}
