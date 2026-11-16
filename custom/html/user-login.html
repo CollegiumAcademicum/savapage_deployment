@@ -1,0 +1,17 @@
+<h3 class="sp-login-dialog">Print Portal</h3>
+<div class="sp-login-dialog">Collegium Academicum &middot; Please sign in to print.</div>
+<script>
+/* CA: after login, open the upload page instead of the document preview.
+ * Runs because SavaPage inserts this snippet with jQuery .html(). */
+(function ($) {
+  if (!$ || window.caStartOnUpload) { return; }
+  window.caStartOnUpload = true;
+  $(document).on("pagecontainershow", function (e, ui) {
+    var to = ui && ui.toPage ? ui.toPage.attr("id") : "";
+    if (to === "page-main" && !window.caUploadShown) {
+      window.caUploadShown = true;
+      setTimeout(function () { $("#button-mini-upload").trigger("click"); }, 0);
+    }
+  });
+}(window.jQuery));
+</script>

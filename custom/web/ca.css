@@ -1,0 +1,136 @@
+/* Collegium Academicum look for the SavaPage web apps, matching CArtei and
+ * start.ca-hd.de. Loaded last (web.properties), so it overrides the jQuery
+ * Mobile 1.4.5 swatches: "a" = pages and dialogs, "b" = headers/dividers.
+ * Fonts are served from here, not Google, so no visitor IPs leave the site. */
+
+@font-face { font-family: 'Source Sans 3'; font-weight: 400; font-display: swap; src: url(fonts/source-sans-3-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Source Sans 3'; font-weight: 600; font-display: swap; src: url(fonts/source-sans-3-latin-600-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Source Sans 3'; font-weight: 700; font-display: swap; src: url(fonts/source-sans-3-latin-700-normal.woff2) format('woff2'); }
+
+:root {
+  --ca-teal: #35ADA4;
+  --ca-teal-dark: #2f9991;
+  --ca-teal-deep: #1e6f69;   /* dark enough for white text and for links */
+  --ca-teal-tint: rgba(53,173,164,0.12);
+  --ca-purple: #5b3a8a;
+  --ca-text: #363636;
+  --ca-muted: #7a7a7a;
+  --ca-bg: #fcfcfc;
+  --ca-line: #dcdcdc;
+}
+
+/* ── base ─────────────────────────────────────────────────────────────── */
+html, body, .ui-mobile, .ui-page, .ui-btn, input, select, textarea, button,
+.ui-mobile label, .ui-title, h1, h2, h3, h4 {
+  font-family: 'Source Sans 3', sans-serif !important;
+}
+.ui-page-theme-a, .ui-overlay-a, .ui-body-a, .ui-page-theme-a .ui-body-inherit {
+  background: var(--ca-bg) !important;
+  color: var(--ca-text) !important;
+  text-shadow: none !important;
+}
+.ui-page { border-top: 6px solid var(--ca-teal); }
+.ui-page:before { background-image: none !important; } /* SavaPage's hills */
+.ui-page-theme-a a:not(.ui-btn), .ui-body-a a:not(.ui-btn) { color: var(--ca-teal-deep); }
+.sp-txt-info { color: var(--ca-muted); }
+
+/* ── headers, footers, list dividers: white, a hairline, teal title ───── */
+.ui-bar-a, .ui-bar-b, .ui-header, .ui-footer {
+  background: #fff !important;
+  border-color: var(--ca-line) !important;
+  color: var(--ca-text) !important;
+  text-shadow: none !important;
+}
+.ui-header { border-width: 0 0 1px !important; }
+.ui-footer { border-width: 1px 0 0 !important; }
+.ui-header .ui-title { color: var(--ca-teal-deep); font-weight: 700; letter-spacing: .01em; }
+.ui-li-divider {
+  background: var(--ca-teal-tint) !important;
+  border-color: var(--ca-line) !important;
+  color: var(--ca-teal-deep) !important;
+  text-shadow: none !important;
+  font-weight: 600;
+}
+.ui-header .ui-btn, .ui-footer .ui-btn {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: var(--ca-text) !important;
+}
+.ui-header .ui-btn:hover, .ui-footer .ui-btn:hover { background: var(--ca-teal-tint) !important; color: var(--ca-teal-deep) !important; }
+
+/* No jQuery Mobile bevels: flat surfaces, soft shadow only on cards. */
+.ui-shadow, .ui-btn.ui-shadow, .ui-shadow-icon.ui-btn:after { box-shadow: none !important; }
+.ui-content { padding: 1.25em; }
+.ui-page-theme-a .ui-btn { padding-top: .8em; padding-bottom: .8em; }
+
+/* ── buttons ──────────────────────────────────────────────────────────── */
+.ui-page-theme-a .ui-btn, .ui-body-a .ui-btn, .ui-overlay-a .ui-btn {
+  background: #fff;
+  border-color: var(--ca-line);
+  color: var(--ca-text);
+  text-shadow: none;
+  font-weight: 600;
+  border-radius: 6px;
+}
+.ui-page-theme-a .ui-btn:hover, .ui-body-a .ui-btn:hover {
+  background: var(--ca-teal-tint);
+  border-color: var(--ca-teal);
+  color: var(--ca-teal-deep);
+}
+.ui-btn.ui-btn-active, .ui-btn.ui-btn-b, .ui-btn-b,
+.ui-page-theme-a .ui-btn.ui-btn-active, .ui-page-theme-a .ui-btn:active {
+  background: var(--ca-teal-deep) !important;
+  border-color: var(--ca-teal-deep) !important;
+  color: #fff !important;
+}
+.ui-btn:focus, .ui-btn.ui-focus { box-shadow: 0 0 0 2px rgba(53,173,164,.45) !important; }
+.ui-controlgroup .ui-btn { border-radius: 0; }
+.ui-controlgroup-horizontal .ui-btn.ui-first-child { border-radius: 6px 0 0 6px; }
+.ui-controlgroup-horizontal .ui-btn.ui-last-child { border-radius: 0 6px 6px 0; }
+
+/* ── form fields ──────────────────────────────────────────────────────── */
+.ui-input-text, .ui-input-search, .ui-select .ui-btn {
+  background: #fff !important;
+  border-color: var(--ca-line) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+.ui-input-text.ui-focus, .ui-input-search.ui-focus {
+  border-color: var(--ca-teal) !important;
+  box-shadow: 0 0 0 2px rgba(53,173,164,.3) !important;
+}
+.ui-checkbox-on:after, .ui-radio-on:after {
+  background-color: var(--ca-teal) !important;
+  border-color: var(--ca-teal) !important;
+}
+.ui-flipswitch-active, .ui-slider-bg { background: var(--ca-teal) !important; border-color: var(--ca-teal-dark) !important; }
+
+/* ── cards: inset lists, collapsibles, popups ─────────────────────────── */
+.ui-listview-inset, .ui-collapsible-inset, .ui-popup.ui-corner-all {
+  border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.07) !important;
+  border-color: var(--ca-line) !important;
+}
+.ui-listview > li.ui-li-static, .ui-listview > li > .ui-btn { background: #fff; }
+.ui-dialog-contain .ui-content { border-top: 3px solid var(--ca-teal); }
+
+/* ── login page ───────────────────────────────────────────────────────── */
+#page-login-content, [id^="page-login"] .ui-content {
+  max-width: 460px;
+  margin: 0 auto;
+}
+#page-login-content:before {
+  content: "";
+  display: block;
+  height: 130px;
+  margin: 28px auto 12px;
+  background: url(images/ca-logo.png) center / contain no-repeat;
+}
+h3.sp-login-dialog {
+  color: var(--ca-teal-deep);
+  font-weight: 700;
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: .2em;
+}
+div.sp-login-dialog { text-align: center; }

@@ -48,6 +48,7 @@ cd /tank/savapage && ./start.sh
 ├── savapage-update.{service,timer}
 ├── setup.sh / start.sh / stop.sh
 ├── caddy-snippet.caddy         # block for /tank/caddy/Caddyfile
+├── custom/                     # CA look: CSS, fonts, logo, login texts
 ├── image/                      # Dockerfile + entrypoint (built by CI)
 └── data/
     ├── server/  → /opt/savapage/server/data  (server.properties, encryption.properties!)
@@ -56,6 +57,16 @@ cd /tank/savapage && ./start.sh
 ```
 
 `data/server/encryption.properties` is the key for secrets SavaPage stores in the database. Back it up together with the DB, because a DB restore without it is useless.
+
+## Look and feel
+
+`custom/` gives the web apps the Collegium Academicum look. Compose mounts it into `/opt/savapage/server/custom/` (manual ch. 20):
+
+- `web.properties` turns off SavaPage's default background and loads `web/ca.css` in the user, admin and job ticket apps.
+- `web/ca.css` overrides the jQuery Mobile swatches with CA teal, Source Sans 3 and the logo on the login page. The font is bundled in `web/fonts/` (OFL), so no requests go to Google.
+- `html/*-login*.html` holds the login headings in English and German (`_de`). The user versions also carry a small script that opens the upload page right after login instead of the document preview. SavaPage has no setting for this; it works because the login snippet is inserted with jQuery `.html()`, which runs inline scripts.
+
+After a change, run `git pull && sudo systemctl restart savapage.service` on pod0.
 
 ## Common commands
 

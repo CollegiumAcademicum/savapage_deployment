@@ -10,6 +10,10 @@ services:
       - ./data/cups:/etc/cups:z
       # FreeIPA CA for LDAPS, copied from /etc/ipa/ca.crt by setup.sh.
       - ./data/ipa-ca.crt:/usr/local/share/ca-certificates/ipa-ca.crt:ro,z
+      # CA look (CSS, fonts, logo, login texts); see custom/web.properties.
+      - ./custom/web.properties:/opt/savapage/server/custom/web.properties:ro,z
+      - ./custom/web:/opt/savapage/server/custom/web:ro,z
+      - ./custom/html:/opt/savapage/server/custom/html:ro,z
     networks:
       - default
       - caddy
